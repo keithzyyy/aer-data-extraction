@@ -52,3 +52,6 @@ Consider downstream effects across the full scope. For example, when discussing 
 - Do not assume the user has Power BI knowledge.
 - Explain Power BI concepts, constraints, decisions, and trade-offs in plain language.
 - Clearly distinguish between work performed in Python (such as extraction, transformation, validation, or preparation of dashboard-ready data) and work performed in Power BI (such as the data model, measures, visuals, and `.pbix` dashboard).
+
+## Python commenting etiquette
+- Whenever code generation is delegated to AI, please put a brief comment for every *logical chunk* of code. This may correspond to one line (e.g. where multiple operations are executed), or multiple lines, depending on the logic of the function/module.

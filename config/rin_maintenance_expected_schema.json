@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "sheet": {
+    "canonical_name": "2.8 Maintenance",
+    "aliases": [
+      "2.8 MAINTENANCE"
+    ]
+  },
+  "patterns": {
+    "reporting_period": "^(?:19|20)\\d{2}\\s*-\\s*\\d{2}$",
+    "template_date": "^TEMPLATE DATE\\b"
+  },
+  "recognized_source_units": [
+    "NUMBER",
+    "0'S",
+    "KM",
+    "$",
+    "$0'S",
+    "$000'S"
+  ],
+  "sections": {
+    "descriptor_metrics": {
+      "anchor_patterns": [
+        "^(?:TABLE\\s+)?2\\.8\\.1\\b"
+      ],
+      "identity_fields": [
+        "maintenance_activity",
+        "maintenance_asset_category"
+      ],
+      "numeric_fields": [
+        "asset_quantity_at_year_end",
+        "quantity_inspected_maintained",
+        "average_age_of_asset_group",
+        "inspection_cycle_years",
+        "maintenance_cycle_years"
+      ],
+      "unit_fields": [
+        "source_unit"
+      ],
+      "fields": [
+        {
+          "name": "maintenance_activity",
+          "role": "label",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "MAINTENANCE ACTIVITY"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "maintenance_asset_category",
+          "role": "label",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "MAINTENANCE ASSET CATEGORY"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "measure_asset_quantity",
+          "role": "label",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "MEASURE / ASSET QUANTITY",
+                "UNIT OF MEASURE / ASSET QUANTITY"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "source_unit",
+          "role": "unit",
+          "required": false,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "UNITS"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "asset_quantity_at_year_end",
+          "role": "metric",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "ASSET QUANTITY"
+              ]
+            },
+            {
+              "match": "exact",
+              "aliases": [
+                "AT YEAR END"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "quantity_inspected_maintained",
+          "role": "metric",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "ASSET QUANTITY"
+              ]
+            },
+            {
+              "match": "exact",
+              "aliases": [
+                "INSPECTED / MAINTAINED"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "average_age_of_asset_group",
+          "role": "metric",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "AVERAGE AGE OF ASSET GROUP"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "inspection_cycle_years",
+          "role": "metric",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "INSPECTION CYCLE (YEARS)"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "maintenance_cycle_years",
+          "role": "metric",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "MAINTENANCE CYCLE (YEARS)"
+              ]
+            }
+          ]
+        }
+      ],
+      "output_columns": [
+        "reporting_period",
+        "maintenance_activity",
+        "maintenance_asset_category",
+        "measure_asset_quantity",
+        "source_unit",
+        "asset_quantity_at_year_end",
+        "quantity_inspected_maintained",
+        "average_age_of_asset_group",
+        "inspection_cycle_years",
+        "maintenance_cycle_years",
+        "source_workbook",
+        "source_sheet",
+        "source_row"
+      ]
+    },
+    "cost_metrics": {
+      "anchor_patterns": [
+        "^(?:TABLE\\s+)?2\\.8\\.2\\b"
+      ],
+      "identity_fields": [
+        "maintenance_activity",
+        "maintenance_asset_subcategory"
+      ],
+      "numeric_fields": [
+        "routine_maintenance_expenditure",
+        "non_routine_maintenance_expenditure"
+      ],
+      "unit_fields": [
+        "source_currency_unit"
+      ],
+      "currency_unit_source_field": "routine_maintenance_expenditure",
+      "fields": [
+        {
+          "name": "maintenance_activity",
+          "role": "label",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "ASSET CATEGORIES",
+                "MAINTENANCE ACTIVITY"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "maintenance_asset_subcategory",
+          "role": "label",
+          "required": true,
+          "header_path": [
+            {
+              "match": "exact",
+              "aliases": [
+                "ASSET SUBCATEGORIES",
+                "MAINTENANCE ASSET CATEGORY"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "routine_maintenance_expenditure",
+          "role": "metric",
+          "required": true,
+          "header_path": [
+            {
+              "match": "prefix",
+              "aliases": [
+                "DIRECT EXPENDITURE"
+              ]
+            },
+            {
+              "match": "exact",
+              "aliases": [
+                "ROUTINE MAINTENANCE"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "non_routine_maintenance_expenditure",
+          "role": "metric",
+          "required": true,
+          "header_path": [
+            {
+              "match": "prefix",
+              "aliases": [
+                "DIRECT EXPENDITURE"
+              ]
+            },
+            {
+              "match": "exact",
+              "aliases": [
+                "NON-ROUTINE MAINTENANCE"
+              ]
+            }
+          ]
+        }
+      ],
+      "output_columns": [
+        "reporting_period",
+        "maintenance_activity",
+        "maintenance_asset_subcategory",
+        "source_currency_unit",
+        "routine_maintenance_expenditure",
+        "non_routine_maintenance_expenditure",
+        "source_workbook",
+        "source_sheet",
+        "source_row"
+      ]
+    }
+  }
+}
