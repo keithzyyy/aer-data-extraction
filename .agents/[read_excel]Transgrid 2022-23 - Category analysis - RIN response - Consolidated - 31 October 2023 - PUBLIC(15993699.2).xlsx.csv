@@ -1,0 +1,66 @@
+,Unnamed: 0,REGULATORY REPORTING STATEMENT,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9
+0,,NSW Electricity Networks Operations Pty Ltd trading as TransGrid,,,,,,,,
+1,,CATEGORY ANALYSIS 2022-23,,,,,,,,
+2,,2.8 MAINTENANCE,,,,,,,,
+3,, TEMPLATE DATE - JUNE 2023,,,,,,,,
+4,,,,,,,,,,
+5,,There are TWO tables on this worksheet. Each has been 'grouped' for easy navigation.,,,,,,,,
+6,,,,,,,,,,
+7,,2.8.1 - DESCRIPTOR METRICS FOR ROUTINE AND NON-ROUTINE MAINTENANCE,,,,,,,,
+8,,,,,,ASSET QUANTITY,,AVERAGE AGE OF ASSET GROUP ,"INSPECTION CYCLE 
+(YEARS)","MAINTENANCE CYCLE 
+(YEARS)"
+9,,MAINTENANCE ACTIVITY,MAINTENANCE ASSET CATEGORY,"MEASURE 
+/ ASSET QUANTITY",UNITS,AT YEAR END,INSPECTED/ MAINTAINED,,,
+10,,,,,,2022-23,2022-23,2022-23,,
+11,,Transmission lines maintenance,Transmission towers,Number of towers,number,37308,9499,40.56,5.45,5.01
+12,,,Transmission tower support structures,Number of towers,number,,,,,
+13,,,Conductors,Route length,km,11233.24,3587,45.77437032,3.39,
+14,,,Transmission cables,Route length,km,90.785,90.785,18.18499201,0.086848612,1.814286501
+15,,Substations equipment & property maintenance,Substation switchbays (incl. Reactive plant),Number of switchbays,number,2341,516,33.6,0.5,5.7
+16,,,Substation power transformers,Number of transformers,number,215,202,20.2,0.5,5.5
+17,,,Substation property,Number of substation properties maintained,number,96,96,38.9,0.5,0.3
+18,,SCADA & network control maintenance,SCADA & network control maintenance,Number,0's,1977,173,12,,
+19,,Protection systems maintenance,Protection systems maintenance,Number,0's,3240,1021,15.6,,6.4
+20,,Other maintenance activity ,Metering,Number,0's,855,540,10.2,2.5,5
+21,,,Communications,Number,0's,1787,981,9.6,0.7,3
+22,,,,,,,,,,
+23,,,,,,,,,,
+24,,,,,,,,,,
+25,,,,,,,,,,
+26,,,,,,,,,,
+27,,,,,,,,,,
+28,,,,,,,,,,
+29,,,,,,,,,,
+30,,,,,,,,,,
+31,,,,,,,,,,
+32,,,,,,,,,,
+33,,,,,,,,,,
+34,,,,,,,,,,
+35,,,,,,,,,,
+36,,,,,,,,,,
+37,,,,,,,,,,
+38,,,,,,,,,,
+39,,,,,,,,,,
+40,,,,,,,,,,
+41,,,,,,,,,,
+42,,,,,,,,,,
+43,,,,,,,,,,
+44,,,,,,,,,,
+45,,2.8.2 - COST METRICS FOR ROUTINE AND NON-ROUTINE MAINTENANCE,,,,,,,,
+46,,,,,,"DIRECT EXPENDITURE
+$",,,,
+47,,ASSET CATEGORIES,ASSET SUBCATEGORIES,,, ROUTINE MAINTENANCE,NON-ROUTINE MAINTENANCE,,,
+48,,,,,,2022-23,2022-23,,,
+49,,Transmission lines maintenance,Transmission towers,,,5452948,8181433,,,
+50,,,Transmission tower support structures,,,,,,,
+51,,,Conductors,,,471823,603304,,,
+52,,,Transmission cables,,,734356,418379,,,
+53,,Substations equipment & property maintenance,Substation switchbays (incl. Reactive plant),,,1454533,2611448,,,
+54,,,Substation power transformers,,,1560406,1464114,,,
+55,,,Substation property,,,6165173,7152146,,,
+56,,SCADA & network control maintenance,SCADA & network control maintenance,,,32712,510468,,,
+57,,Protection systems maintenance,Protection systems maintenance,,,1150739,617753,,,
+58,,Other maintenance activity ,Metering,Number,0's,499217,220259,,,
+59,,,Communications,Number,0's,400286,1439324,,,
+60,,,Bushfire Remediation,,,,18157008,,,

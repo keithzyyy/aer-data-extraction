@@ -1,0 +1,63 @@
+,Unnamed: 0,REGULATORY REPORTING STATEMENT,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9
+0,,Ausnet Services (Transmission) Ltd,,,,,,,,
+1,,CATEGORY ANALYSIS 2020-21,,,,,,,,
+2,,2.8 MAINTENANCE,,,,,,,,
+3,,,,,,,,,,
+4,,There are TWO tables on this worksheet. Each has been 'grouped' for easy navigation. See the Instructions sheet on how to group or ungroup data.,,,,,,,,
+5,,,,,,,,,,
+6,,2.8.1 - DESCRIPTOR METRICS FOR ROUTINE AND NON-ROUTINE MAINTENANCE,,,,,,,,
+7,,,,,,ASSET QUANTITY,,AVERAGE AGE OF ASSET GROUP ,"INSPECTION CYCLE 
+(YEARS)","MAINTENANCE CYCLE 
+(YEARS)"
+8,,MAINTENANCE ACTIVITY,MAINTENANCE ASSET CATEGORY,"MEASURE 
+/ ASSET QUANTITY",UNITS,AT YEAR END,INSPECTED/ MAINTAINED,,,
+9,,,,,,2020-21,2020-21,2020-21,,
+10,,Transmission lines maintenance,Transmission towers,Number of towers,0's,13206,14673.333333333334,50.790549750113584,1,9
+11,,,Transmission tower support structures,Number of towers,0's,69605,46403.333333333336,50.0462538610732,3,3
+12,,,Conductors,Route length,km,5024.7,1674.8999999999999,40.18905270513225,3,0
+13,,,Transmission cables,Route length,km,8.542370333333334,17.08474066666667,27.134999999999994,1,1
+14,,Substations equipment & property maintenance,Substation switchbays (incl. Reactive plant),Number of switchbays,0's,1158,2173,22.467680061379113,1,6
+15,,,Substation power transformers,Number of transformers,0's,173,1173,29.11849710982659,1,4
+16,,,Substation property,Number of substation properties maintained,0's,47,1277,30,0.083,0.5
+17,,SCADA & network control maintenance,SCADA & network control maintenance,Units,,20989.548209999994,10494.774104999997,17.728515433326322,4,4
+18,,Protection systems maintenance,Protection systems maintenance,Units,,6555.000000000003,4370.000000000002,16.51615440553468,3,3
+19,,Other maintenance activity ,,,,,,,,
+20,,,,,,,,,,
+21,,,,,,,,,,
+22,,,,,,,,,,
+23,,,,,,,,,,
+24,,,,,,,,,,
+25,,,,,,,,,,
+26,,,,,,,,,,
+27,,,,,,,,,,
+28,,,,,,,,,,
+29,,,,,,,,,,
+30,,,,,,,,,,
+31,,,,,,,,,,
+32,,,,,,,,,,
+33,,,,,,,,,,
+34,,,,,,,,,,
+35,,,,,,,,,,
+36,,,,,,,,,,
+37,,,,,,,,,,
+38,,,,,,,,,,
+39,,,,,,,,,,
+40,,,,,,,,,,
+41,,,,,,,,,,
+42,,,,,,,,,,
+43,,,,,,,,,,
+44,,2.8.2 - COST METRICS FOR ROUTINE AND NON-ROUTINE MAINTENANCE,,,,,,,,
+45,,,,,,"DIRECT EXPENDITURE
+($0's)",,,,
+46,,ASSET CATEGORIES,ASSET SUBCATEGORIES,,, ROUTINE MAINTENANCE,NON-ROUTINE MAINTENANCE,,,
+47,,,,,,2020-21,2020-21,,,
+48,,Transmission lines maintenance,Transmission towers,,,805691.2766917964,938109.7639208642,,,
+49,,,Transmission tower support structures,,,249660.1924483811,104794.97872496456,,,
+50,,,Conductors,,,1301577.8191408718,126928.4625234925,,,
+51,,,Transmission cables,,,7727.256762510452,35359.77096944002,,,
+52,,Substations equipment & property maintenance,Substation switchbays (incl. Reactive plant),,,2718726.328680422,2782992.6607578387,,,
+53,,,Substation power transformers,,,1804333.001472167,2396225.946977211,,,
+54,,,Substation property,,,373523.9204519498,2917832.530940347,,,
+55,,SCADA & network control maintenance,SCADA & network control maintenance,,,494177.9992198432,602762.492704215,,,
+56,,Protection systems maintenance,Protection systems maintenance,,,610452.9461243512,1055964.482481628,,,
+57,,Other maintenance activity ,,,,,,,,

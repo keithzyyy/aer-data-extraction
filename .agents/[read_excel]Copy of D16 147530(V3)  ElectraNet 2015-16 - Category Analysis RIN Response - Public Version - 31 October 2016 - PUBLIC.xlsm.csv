@@ -1,0 +1,63 @@
+,Unnamed: 0,REGULATORY REPORTING STATEMENT,Unnamed: 2,Unnamed: 3,Unnamed: 4,Unnamed: 5,Unnamed: 6,Unnamed: 7,Unnamed: 8,Unnamed: 9
+0,,ElectraNet,,,,,,,,
+1,,CATEGORY ANALYSIS 2015-16,,,,,,,,
+2,,2.8 MAINTENANCE,,,,,,,,
+3,,,,,,,,,,
+4,,There are TWO tables on this worksheet. Each has been 'grouped' for easy navigation. See the Instructions sheet on how to group or ungroup data.,,,,,,,,
+5,,,,,,,,,,
+6,,2.8.1 - DESCRIPTOR METRICS FOR ROUTINE AND NON-ROUTINE MAINTENANCE,,,,,,,,
+7,,,,,,ASSET QUANTITY,,AVERAGE AGE OF ASSET GROUP ,"INSPECTION CYCLE 
+(YEARS)","MAINTENANCE CYCLE 
+(YEARS)"
+8,,MAINTENANCE ACTIVITY,MAINTENANCE ASSET CATEGORY,"MEASURE 
+/ ASSET QUANTITY",UNITS,AT YEAR END,INSPECTED/ MAINTAINED,,,
+9,,,,,,2015-16,2015-16,2015-16,,
+10,,Transmission lines maintenance,Transmission towers,Number of towers,0's,13.253,13.253,44.3,0.5,Nil. Cond mon.&corr mtce
+11,,,Transmission tower support structures,Number of towers,0's,58.668,58.668,42,0.5,Nil. Cond mon.&corr mtce
+12,,,Conductors,Route length,km,5.497,5.497,42.7,0.5,Nil. Cond mon.&corr mtce
+13,,,Transmission cables,Route length,km,0.027,0.027,12.5,0.02,Nil. Cond mon.&corr mtce
+14,,Substations equipment & property maintenance,Substation switchbays (incl. Reactive plant),Number of switchbays,0's,1.346,1.346,22.7,0.25,6
+15,,,Substation power transformers,Number of transformers,0's,0.139,0.139,29.1,0.25,6
+16,,,Substation property,Number of substation properties maintained,0's,0.077,0.077,37.9,0.25,0.5
+17,,SCADA & network control maintenance,SCADA & network control maintenance,Number of comms sites,0's,120,120,30,0.5,Nil. Cond mon.&corr mtce
+18,,Protection systems maintenance,Protection systems maintenance,Number of protection systems,0's,1362,1362,13.6,0.25,4
+19,,Right of way (Row) maintenance,Row Maintenance ,Length (Route Km),000' km,4.539,4.539,42.7,0.5,3
+20,,,,,,,,,,
+21,,,,,,,,,,
+22,,,,,,,,,,
+23,,,,,,,,,,
+24,,,,,,,,,,
+25,,,,,,,,,,
+26,,,,,,,,,,
+27,,,,,,,,,,
+28,,,,,,,,,,
+29,,,,,,,,,,
+30,,,,,,,,,,
+31,,,,,,,,,,
+32,,,,,,,,,,
+33,,,,,,,,,,
+34,,,,,,,,,,
+35,,,,,,,,,,
+36,,,,,,,,,,
+37,,,,,,,,,,
+38,,,,,,,,,,
+39,,,,,,,,,,
+40,,,,,,,,,,
+41,,,,,,,,,,
+42,,,,,,,,,,
+43,,,,,,,,,,
+44,,2.8.2 - COST METRICS FOR ROUTINE AND NON-ROUTINE MAINTENANCE,,,,,,,,
+45,,,,,,"DIRECT EXPENDITURE
+($0's)",,,,
+46,,ASSET CATEGORIES,ASSET SUBCATEGORIES,,, ROUTINE MAINTENANCE,NON-ROUTINE MAINTENANCE,,,
+47,,,,,,2015-16,2015-16,,,
+48,,Transmission lines maintenance,Transmission towers,,,2009278.6005934,7210284.13744427,,,
+49,,,Transmission tower support structures,,,1001427.27027129,3378776.73421985,,,
+50,,,Conductors,,,235864.239010056,1872118.8886096799,,,
+51,,,Transmission cables,,,486821.910125254,122007.499726203,,,
+52,,Substations equipment & property maintenance,Substation switchbays (incl. Reactive plant),,,2166651.9647527896,4253544.14582415,,,
+53,,,Substation power transformers,,,976159.5582476769,2288707.53153679,,,
+54,,,Substation property,,,3913646.76699953,4078865.8826390603,,,
+55,,SCADA & network control maintenance,SCADA & network control maintenance,,,1760423.29,270048.56,,,
+56,,Protection systems maintenance,Protection systems maintenance,,,2048701.83,974846.04,,,
+57,,Other maintenance activity ,Row Maintenance ,,,1872730.18,130082.79999999999,,,
