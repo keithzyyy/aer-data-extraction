@@ -1,0 +1,41 @@
+{
+  "extraction_complete": true,
+  "stage2a_complete": true,
+  "stage2b_complete": false,
+  "panel_complete": true,
+  "pipeline_complete": false,
+  "row_counts": {
+    "descriptor_rows": 285,
+    "descriptor_analytic_rows": 280,
+    "cost_rows": 289,
+    "cost_analytic_rows": 283,
+    "workbook_mappings": 27,
+    "cost_descriptor_relationships": 283,
+    "issues": 2
+  },
+  "issue_counts": {
+    "errors": 2,
+    "warnings": 0
+  },
+  "status_counts": {
+    "relationship_status": {
+      "matched_with_denominator": 267,
+      "no_descriptor_match": 9,
+      "matched_without_denominator": 7
+    },
+    "installed_ratio_status": {
+      "calculated": 260,
+      "no_descriptor_match": 9,
+      "missing_denominator": 7,
+      "missing_numerators": 5,
+      "nonpositive_denominator": 2
+    },
+    "serviced_ratio_status": {
+      "calculated": 260,
+      "no_descriptor_match": 9,
+      "missing_denominator": 7,
+      "missing_numerators": 5,
+      "nonpositive_denominator": 2
+    }
+  }
+}

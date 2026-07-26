@@ -1,4 +1,5 @@
 source_workbook,status,reporting_period,layout_profile,descriptor_row_count,cost_row_count,warnings,error,run_complete
+AusNet (T) 2019-20 - Category Analysis - RIN Response - Consolidated - 28 July 2020 - PUBLIC(11429287.3).xlsx,success,2019-20,stacked_baseline,10,10,[],,True
 AusNet (T) 2020-21 - Category Analysis - RIN Response - Consolidated - 29 July 2021 - PU(12595757.1).xlsx,success,2020-21,stacked_baseline,10,10,[],,True
 AusNet (T) 2021-22 - Category Analysis - RIN Response - Consolidated - 28 July 2022 - PUBLIC(14205738.1).xlsx,success,2021-22,stacked_baseline,10,10,[],,True
 Ausnet Services (ET) 2022-23 - Category Analysis - RIN Response - Consolidated - 28 July 2023 - PUBLIC(15600825.1).xlsx,success,2022-23,stacked_baseline,10,10,[],,True
@@ -14,6 +15,7 @@ ElectraNet 2020-21 - Category Analysis - RIN Response - Consolidated - 29 Octobe
 ElectraNet 2021-22 - Category Analysis - RIN response - 28 October 2022 - PUBLIC(14582813.1).xlsx,success,2021-22,stacked_baseline,10,10,"[""descriptor_metrics: nonnumeric values in maintenance_cycle_years: row 12: 'Nil. Cond mon.&corr mtce'; row 13: 'Nil. Cond mon.&corr mtce'; row 14: 'Nil. Cond mon.&corr mtce'; row 15: 'Nil. Cond mon.&corr mtce'; row 19: 'Nil. Cond mon.&corr mtce'""]",,True
 ElectraNet 2022-23 - Category analysis - RIN responses - Consolidated - 27 October 2023 - PUBLIC(15999621.1).xlsx,success,2022-23,stacked_baseline,10,10,"[""descriptor_metrics: nonnumeric values in maintenance_cycle_years: row 12: 'Nil. Cond mon.&corr mtce'; row 13: 'Nil. Cond mon.&corr mtce'; row 14: 'Nil. Cond mon.&corr mtce'; row 15: 'Nil. Cond mon.&corr mtce'; row 19: 'Nil. Cond mon.&corr mtce'""]",,True
 ElectraNet 2023-24 - Category Analysis - RIN response - Consolidated - 31 October 2024 - PUBLIC(17494700.2).xlsx,success,2023-24,stacked_revised,10,10,[],,True
+Powerlink 2019-20 - Category Analysis - RIN Response - Consolidated - 23 October 2020 - PUBLIC (11647526.2).xlsx,success,2019-20,stacked_baseline,11,11,[],,True
 Powerlink 2020-21 - Category Analysis - RIN Response - Consolidated - 20 October 2021 - PUBLIC(12941266.1).xlsx,success,2020-21,stacked_baseline,11,11,[],,True
 Powerlink 2021-22 - Category analysis - Consolidated - 26 October 2022 - PUBLIC(14556313.1).xlsx,success,2021-22,stacked_baseline,11,11,[],,True
 Powerlink 2022-23 - Category Analysis - RIN Response - Consolidated - 27 October 2023 - PUBLIC(15996094.1).xlsx,success,2022-23,stacked_revised,11,11,[],,True
@@ -21,5 +23,6 @@ Powerlink 2023-24 - Category Analysis - RIN Response - Consolidated - 28 October
 Transgrid 2018-19 - Category Analysis - RIN Response - Consolidated - 31 October 2019 - PUBLIC D19-175594.XLSM.xlsx,success,2018-19,stacked_baseline,11,11,[],,True
 "TransGrid 2019-20 - Category Analysis - RIN Response - Consolidated - 30 October 2020 - PUBLIC (#11,665,158).xlsx",success,2019-20,stacked_baseline,11,12,[],,True
 TransGrid 2020-21 - Category Analysis - RIN Response - Consolidated - 29 October 2021 - PUBLIC(13029988.1).xlsx,success,2020-21,stacked_baseline,11,12,[],,True
+Transgrid 2021-22 - Category Analysis - RIN Response - Consolidated - 31 October 2022 - PUBLIC(14550262.2).xlsx,success,2021-22,stacked_baseline,12,12,[],,True
 Transgrid 2022-23 - Category analysis - RIN response - Consolidated - 31 October 2023 - PUBLIC(15993699.2).xlsx,success,2022-23,stacked_revised,11,12,[],,True
 Transgrid 2023-24 - Category Analysis - RIN Response - Consolidated - 31 October 2024 - PUBLIC(17496053.2).xlsx,success,2023-24,stacked_revised,11,11,[],,True
