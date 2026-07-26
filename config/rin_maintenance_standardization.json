@@ -1,0 +1,406 @@
+{
+  "schema_version": 1,
+  "target_businesses": [
+    "Transgrid",
+    "AusNet Transmission",
+    "Powerlink",
+    "ElectraNet"
+  ],
+  "required_reporting_periods": [
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24"
+  ],
+  "parent_categories": [
+    {
+      "id": "transmission_lines_maintenance",
+      "label": "Transmission lines maintenance",
+      "aliases": [
+        "Transmission lines maintenance"
+      ]
+    },
+    {
+      "id": "substations_equipment_property_maintenance",
+      "label": "Substations equipment & property maintenance",
+      "aliases": [
+        "Substations equipment & property maintenance"
+      ]
+    },
+    {
+      "id": "scada_network_control_maintenance",
+      "label": "SCADA & network control maintenance",
+      "aliases": [
+        "SCADA & network control maintenance"
+      ]
+    },
+    {
+      "id": "protection_systems_maintenance",
+      "label": "Protection systems maintenance",
+      "aliases": [
+        "Protection systems maintenance"
+      ]
+    },
+    {
+      "id": "other_maintenance_activity",
+      "label": "Other maintenance activity",
+      "aliases": [
+        "Other maintenance activity"
+      ]
+    },
+    {
+      "id": "right_of_way_maintenance",
+      "label": "Right of way (ROW) maintenance",
+      "aliases": [
+        "Right of way (Row) maintenance"
+      ]
+    }
+  ],
+  "contextual_category_aliases": [
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "transmission_lines_maintenance",
+      "id": "transmission_towers",
+      "label": "Transmission towers",
+      "aliases": [
+        "Transmission towers"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "transmission_lines_maintenance",
+      "id": "transmission_tower_support_structures",
+      "label": "Transmission tower support structures",
+      "aliases": [
+        "Transmission tower support structures"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "transmission_lines_maintenance",
+      "id": "conductors",
+      "label": "Conductors",
+      "aliases": [
+        "Conductors"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "transmission_lines_maintenance",
+      "id": "transmission_cables",
+      "label": "Transmission cables",
+      "aliases": [
+        "Transmission cables"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "substations_equipment_property_maintenance",
+      "id": "substation_switchbays",
+      "label": "Substation switchbays (incl. Reactive plant)",
+      "aliases": [
+        "Substation switchbays (incl. Reactive plant)"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "substations_equipment_property_maintenance",
+      "id": "substation_power_transformers",
+      "label": "Substation power transformers",
+      "aliases": [
+        "Substation power transformers"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "substations_equipment_property_maintenance",
+      "id": "substation_property",
+      "label": "Substation property",
+      "aliases": [
+        "Substation property"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "scada_network_control_maintenance",
+      "id": "scada_network_control",
+      "label": "SCADA & network control maintenance",
+      "aliases": [
+        "SCADA & network control maintenance"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "protection_systems_maintenance",
+      "id": "protection_systems",
+      "label": "Protection systems maintenance",
+      "aliases": [
+        "Protection systems maintenance"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "transmission_tower_support_structures",
+      "label": "Transmission tower support structures",
+      "aliases": [
+        "Transmission tower support structures",
+        "Tramsission tower support structures",
+        "Transmission Towers Support",
+        "TRANSMISSION TOWERS SUPPORT STRUCTURES"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "corridor_maintenance_non_vegetation",
+      "label": "Corridor maintenance (non-vegetation)",
+      "aliases": [
+        "Corridor maintenance (non vegetation)",
+        "Corridor maintenance (non veg)",
+        "Corridor Maintenance (Non-Veg)"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "right_of_way_maintenance",
+      "label": "Right of way (ROW) maintenance",
+      "aliases": [
+        "Right of way (Row Maintenance)",
+        "Right of Way (Row) Maintenance",
+        "RIGHT OF WAY ROW MAINTENANCE",
+        "ROW MAINTENANCE"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "metering",
+      "label": "Metering",
+      "aliases": [
+        "Metering"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "metering_systems",
+      "label": "Metering Systems",
+      "aliases": [
+        "Metering Systems"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "communications",
+      "label": "Communications",
+      "aliases": [
+        "Communications"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "telecomms_systems",
+      "label": "Telecomms Systems",
+      "aliases": [
+        "Telecomms Systems"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "telecommunications_systems",
+      "label": "Telecommunications Systems",
+      "aliases": [
+        "Telecommunications Systems"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "transmission_lines_maintenance_access_tracks",
+      "label": "Transmission lines maintenance access tracks",
+      "aliases": [
+        "Transmission lines maintenance access tracks"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "other_maintenance_activity",
+      "id": "bushfire_remediation",
+      "label": "Bushfire Remediation",
+      "aliases": [
+        "Bushfire Remediation"
+      ]
+    },
+    {
+      "tables": [
+        "descriptor_metrics",
+        "cost_metrics"
+      ],
+      "parent_id": "right_of_way_maintenance",
+      "id": "row_maintenance",
+      "label": "ROW Maintenance",
+      "aliases": [
+        "Row Maintenance"
+      ]
+    }
+  ],
+  "descriptor_quantity_units": [
+    {
+      "aliases": [
+        "0's"
+      ],
+      "standard_unit": "count",
+      "scale_factor": 1
+    },
+    {
+      "aliases": [
+        "number"
+      ],
+      "standard_unit": "count",
+      "scale_factor": 1
+    },
+    {
+      "aliases": [
+        "km"
+      ],
+      "standard_unit": "km",
+      "scale_factor": 1
+    },
+    {
+      "aliases": [
+        "000' km"
+      ],
+      "standard_unit": "km",
+      "scale_factor": 1000
+    }
+  ],
+  "missing_unit_measure_fallbacks": [
+    {
+      "measure_aliases": [
+        "Units",
+        "Comms & SCADA equipment",
+        "Comms and SCADA equipment",
+        "Equipment Count",
+        "Insulator Strings",
+        "NO. OF CONTROL IEDs",
+        "NO. OF METERS",
+        "NO. OF TERMINAL EQUIPMENT/BASE STATION/MUX/POWER SUPPLIES",
+        "NO.OF MAIN RELAYS",
+        "NUMBER OF COMMS SITES",
+        "NUMBER OF PROTECTION SYSTEMS",
+        "Protection relays"
+      ],
+      "standard_unit": "count",
+      "scale_factor": 1
+    },
+    {
+      "measure_aliases": [
+        "Insulator strings (000's)",
+        "Number of substation properties maintained (000's)",
+        "Number of switchbays (000's)",
+        "Number of towers (000's)",
+        "Number of transformers (000's)"
+      ],
+      "standard_unit": "count",
+      "scale_factor": 1000
+    },
+    {
+      "measure_aliases": [
+        "LENGTH (ROUTE KM)",
+        "Route length (km)"
+      ],
+      "standard_unit": "km",
+      "scale_factor": 1
+    }
+  ],
+  "cost_currency_units": [
+    {
+      "aliases": [
+        "$",
+        "$0's"
+      ],
+      "currency": "AUD",
+      "price_basis": "nominal",
+      "scale_factor": 1
+    },
+    {
+      "aliases": [
+        "$000's"
+      ],
+      "currency": "AUD",
+      "price_basis": "nominal",
+      "scale_factor": 1000
+    }
+  ],
+  "recognized_special_metric_text": [
+    {
+      "metric": "maintenance_cycle_years",
+      "aliases": [
+        "Nil. Cond mon.&corr mtce"
+      ]
+    }
+  ]
+}
