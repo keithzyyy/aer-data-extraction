@@ -983,40 +983,179 @@ and exit `1`; it must not be mistaken for a fully standardised Power BI input.
 
 ### Purpose
 
-Stage 3 will read the persistent Stage 2 artifacts under `data/standardize`
-and use their validated standardised data and enriched acquisition metadata to
-create stable tables that Power BI can load directly. In plain terms, Python
-should resolve workbook irregularities and semantic differences before Power
-BI is asked to calculate or display comparisons.
+Stage 3 reads the persistent Stage 2 artifacts under `data/standardize` and
+uses their standardised data and enriched acquisition metadata to create a
+small star model under `data/models`. In plain terms, Python resolves workbook
+irregularities, category identities, units, table relationships, and source
+exceptions before Power BI is asked to calculate or display comparisons.
 
-### Planned workflow
+`data/standardize` remains the detailed Stage 2 evidence. `data/models`
+contains the narrower, stable tables intended for Power BI.
+
+### Workflow
 
 ```text
-read validated stage-2 outputs
+read all six stage-2 artifacts
     -> verify the business and AER metadata enriched in stage 2A
     -> verify reporting-period and business coverage
-    -> reshape metrics where a long-form model is beneficial
-    -> attach appropriate source lineage
-    -> produce stable Power BI input tables
+    -> build shared business, period, category, metric, and workbook dimensions
+    -> reshape descriptor metrics to a long fact table
+    -> retain maintenance expenditure and matched denominators in a cost fact
+    -> preserve unresolved rows in the model issues output
+    -> verify declared fact-table grains and foreign keys
+    -> publish Power BI model tables and the model summary
 ```
 
-### Planned data contract and Power BI boundary
+### MVP star-model contract
 
-The consolidated model must:
+The MVP model uses shared dimensions rather than joining the descriptor and
+cost tables into one mixed-grain table:
 
-- identify business and reporting period explicitly;
-- retain the validated workbook-to-manifest relationship from stage 2A;
-- use stable metric and category identifiers;
-- distinguish descriptor quantities from maintenance expenditure;
-- expose normalised values and units while retaining source references;
-- prevent duplicate records at its declared level of detail; and
-- carry acquisition, extraction, and standardisation completeness information.
+```text
+dim_business -------------------+
+dim_reporting_period -----------+
+dim_maintenance_category -------+--> fact_descriptor_metric
+dim_metric ---------------------+
 
-The exact table relationships and long-form output contract remain to be
-specified. Power BI must consume these validated outputs rather than reading the
-irregular workbooks or interpreting the canonical extraction CSVs directly.
-Stage 3 must read `rin_maintenance_stage2_summary.json` and explicitly handle
-any false completeness flag before publishing its outputs.
+dim_business -------------------+
+dim_reporting_period -----------+--> fact_maintenance_cost
+dim_maintenance_category -------+
+```
+
+The category key combines the standard maintenance activity ID and standard
+asset ID. A child asset ID is not sufficient by itself because the same child
+can occur under different parent activities. The category dimension is built
+from the union of descriptor and cost categories so descriptor-only and
+cost-only records remain visible.
+
+The dimensions are:
+
+- `dim_business.csv`, containing stable business IDs and display names;
+- `dim_reporting_period.csv`, containing period start and end years, sort
+  order, and an `is_common_panel` flag;
+- `dim_maintenance_category.csv`, containing the contextual activity-asset
+  key, IDs, labels, source-table presence flags, and display order;
+- `dim_metric.csv`, containing the five descriptor metric IDs, labels, groups,
+  and display order; and
+- `dim_source_workbook.csv`, retaining the validated workbook-to-manifest
+  relationship, AER URLs, business, period, and extraction metadata.
+
+`fact_descriptor_metric.csv` has one row for each meaningful, resolved
+business-period-category-metric combination. It reshapes these five Stage 2
+descriptor fields into a single metric value:
+
+- asset quantity at year end;
+- quantity inspected or maintained;
+- average asset age;
+- inspection cycle; and
+- maintenance cycle.
+
+The fact retains the standard value, standard unit, factual value status,
+submitted source value, workbook, worksheet, and source row. Blank and
+recognised-special metric statuses remain present rather than being converted
+to zero or dropped. Its declared grain is unique across business, reporting
+period, contextual maintenance category, and metric.
+
+`fact_maintenance_cost.csv` has one row for each meaningful standardised cost
+record. It is built from the Stage 2 cost-descriptor relationship table so
+matched, denominator-less, and unmatched expenditure records remain visible.
+It retains routine, non-routine, and total nominal AUD expenditure; installed
+and serviced denominators; units and statuses; relationship status; and cost
+and descriptor source lineage. Its declared grain is unique across business,
+reporting period, and contextual maintenance category.
+
+The six Stage 2 row-ratio columns are not published in the Power BI-facing
+fact. Power BI must calculate ratios as the sum of an eligible expenditure
+numerator divided by the sum of its compatible denominator, not as an average
+of row ratios. A ratio must remain within a compatible category and denominator
+unit; counts and kilometres must never be added together.
+
+All available reporting periods remain in the model. `is_common_panel` is true
+for periods represented by every model business, allowing cross-business pages
+to default to the balanced five-year panel while preserving older history.
+
+### Known exception and completeness policy
+
+Meaningful Stage 2 rows without a resolved contextual category are not assigned
+to an invented `Unknown` category. They are excluded from analytic facts,
+retained with source lineage in `rin_maintenance_model_issues.csv`, and counted
+in the model summary. Empty template rows remain available in Stage 2 but do
+not become fact records.
+
+For the current data, this policy affects one AusNet Transmission 2019-20
+descriptor row. The submitted row contains an inspected or maintained quantity
+of zero but no child category, measure, or source unit. Excluding it does not
+change a standard numeric total because Stage 2 could not establish its unit,
+but the omission remains explicit.
+
+`rin_maintenance_model_summary.json` separates successful model construction
+from source-pipeline completeness. It records the Stage 2 completeness flags,
+`model_build_complete`, `source_pipeline_complete`, `model_complete`, common
+panel periods, row and issue counts, excluded source rows, and relationship
+status counts. The current model is usable with a disclosed exception but is
+not labelled complete.
+
+### Stage 3 model-building entry point
+
+The file-based Stage 3 interface is:
+
+```text
+python -m scripts.build_rin_maintenance_model \
+  --input-dir data/standardize \
+  [--output-dir data/models] \
+  [--overwrite]
+```
+
+The input directory must contain the complete fixed Stage 2 artifact set:
+
+- `rin_maintenance_descriptor_standardized.csv`;
+- `rin_maintenance_cost_standardized.csv`;
+- `rin_maintenance_workbook_mapping.csv`;
+- `rin_maintenance_cost_descriptor_relationships.csv`;
+- `rin_maintenance_issues.csv`; and
+- `rin_maintenance_stage2_summary.json`.
+
+The entry point validates paths, the Stage 2 summary, input contracts, output
+collisions, dimension keys, fact grains, and foreign-key coverage. It stages
+all outputs, publishes the CSV artifacts, and publishes the JSON summary last.
+The output directory cannot equal or be nested inside the Stage 2 input
+directory. Existing outputs are not replaced unless `--overwrite` is supplied.
+
+Exit codes are:
+
+- `0` when the model is built and every upstream completeness flag is true;
+- `1` when usable model outputs were saved but an upstream completeness flag
+  or disclosed source exception keeps `model_complete` false; and
+- `2` when setup, input reading, contract validation, model construction,
+  collision handling, or output writing fails.
+
+The CLI uses concise `[model]` progress messages. It does not standardise data,
+repair unresolved source meaning, calculate dashboard measures, or create a
+Power BI file.
+
+### Verification and acceptance
+
+Fabricated-DataFrame tests must verify:
+
+- dimension keys are stable and unique;
+- the contextual category dimension uses the union of both facts;
+- source-only, cost-only, and shared categories remain present;
+- descriptor values reshape to the five configured metric rows without
+  changing source values or statuses;
+- cost rows retain unmatched relationships and valid denominators;
+- no precomputed row-ratio column reaches the cost fact;
+- unresolved meaningful rows remain in model issues and not analytic facts;
+- empty template rows do not become fact records;
+- fact grains contain no unintended duplicates;
+- every fact foreign key resolves to its dimension;
+- the common-panel flag is derived from business-period coverage;
+- complete and incomplete Stage 2 summaries produce exit codes `0` and `1`;
+  and
+- setup, collision, validation, and writing failures return exit code `2`
+  without presenting partial files as a complete model.
+
+Power BI must consume these model outputs rather than reading irregular
+workbooks, canonical Stage 1 CSVs, or detailed Stage 2 tables directly.
 
 ## Stage 4 - Develop the Power BI dashboard
 
@@ -1028,24 +1167,227 @@ relationships, calculations used by visuals, filters, and dashboard layout. It
 will not be responsible for repairing source workbook structure or guessing
 units.
 
-### Planned workflow and safeguards
+### Power BI loading workflow
 
 ```text
-load the validated consolidated tables
-    -> define and verify table relationships
-    -> create documented calculations and comparison measures
-    -> build filters and visuals
-    -> disclose material coverage limitations
-    -> reconcile displayed totals to the validated Python outputs
+run the Stage 3 model-building entry point
+    -> review the model summary and disclosed issues
+    -> import each model CSV separately
+    -> import and flatten the model-summary JSON
+    -> assign Power BI data types and display sorting
+    -> create one-to-many dimension-to-fact relationships
+    -> define documented measures
+    -> build and validate the dashboard pages
 ```
+
+First create the Stage 3 artifact set:
+
+```text
+python -m scripts.build_rin_maintenance_model \
+  --input-dir data/standardize \
+  --output-dir data/models
+```
+
+Review `rin_maintenance_model_summary.json` and
+`rin_maintenance_model_issues.csv` before opening Power BI. Exit `1` currently
+means that usable model outputs were written with the disclosed AusNet
+Transmission exception; it does not mean model construction failed.
+
+In Power BI Desktop, use **Get Data -> Text/CSV** to import each model CSV
+separately. The files have different schemas, so the Folder connector is not
+needed for this fixed artifact set. Use **Get Data -> JSON** to import
+`rin_maintenance_model_summary.json`, then flatten its required completeness
+and publication fields into a one-row `model_status` table for the data-quality
+page.
+
+Assign Power BI data types deliberately:
+
+- IDs, labels, reporting periods, statuses, and units are text;
+- sort orders and source rows are whole numbers;
+- descriptor values, quantities, and expenditure are decimal numbers; and
+- panel, presence, and completeness flags are true/false values.
+
+Configure these display orders:
+
+- sort `reporting_period` by `period_sort_order`;
+- sort maintenance categories by `maintenance_category_sort_order`; and
+- sort descriptor metrics by `metric_sort_order`.
+
+Create one-to-many, single-direction relationships from:
+
+- `dim_business` to both fact tables using `business_id`;
+- `dim_reporting_period` to both fact tables using `reporting_period`;
+- `dim_maintenance_category` to both fact tables using
+  `maintenance_category_key`;
+- `dim_metric` to `fact_descriptor_metric` using `metric_id`; and
+- `dim_source_workbook` to both fact tables and
+  `rin_maintenance_model_issues` using `source_workbook`.
+
+Do not directly relate `fact_descriptor_metric` to
+`fact_maintenance_cost`. Do not create additional relationships from business
+or reporting-period dimensions through `dim_source_workbook`, because that
+would introduce alternative filter paths. Avoid bidirectional filtering unless
+a later, documented dashboard requirement demonstrates that it is necessary.
+
+Technical keys and source-lineage fields may be hidden from ordinary report
+views after relationships are verified. They must remain in the model for
+drill-through, source reconciliation, and issue investigation.
+
+### MVP dashboard pages and analytical questions
+
+The first dashboard should contain four pages aligned with the analytical
+questions in `docs/rin_maintenance_data_guide.md`.
+
+#### 1. Overview
+
+This page should answer:
+
+- How has maintenance expenditure changed by business and reporting period?
+- Is a change persistent or concentrated in one period?
+- Which maintenance activities explain the largest reported expenditure?
+- How has the routine and non-routine maintenance mix changed?
+
+Suggested visuals are:
+
+- cards for total, routine, and non-routine maintenance expenditure;
+- a line chart of total expenditure by reporting period, with business as the
+  legend;
+- a 100% stacked column chart of routine and non-routine expenditure share;
+- a clustered bar chart of expenditure by maintenance activity; and
+- slicers for business, reporting period, maintenance activity, maintenance
+  category, and common-panel membership.
+
+All expenditure visuals must identify the figures as nominal AUD because no
+inflation adjustment has been applied.
+
+#### 2. Business and unit-cost comparison
+
+This page should answer:
+
+- Which maintenance activities explain differences between businesses?
+- What is expenditure per compatible installed asset, kilometre, or other
+  reported unit?
+- What is expenditure per compatible serviced unit?
+- Is a change associated mainly with work volume or expenditure per unit?
+
+Suggested visuals are:
+
+- a clustered bar chart of expenditure by business for the selected category;
+- a line chart of expenditure per installed unit over time;
+- a line chart of expenditure per serviced unit over time;
+- a combo chart with expenditure as columns and a compatible quantity as the
+  line; and
+- a detail matrix containing business, category, expenditure, denominator
+  value, denominator unit, and relationship status.
+
+Unit-cost visuals must use only records with compatible approved denominators,
+remain within one contextual category and unit, and return blank when a valid
+denominator is unavailable. Power BI must calculate an aggregate unit cost as
+the sum of eligible expenditure divided by the sum of its compatible quantity.
+It must never average source-row ratios.
+
+#### 3. Maintenance context
+
+This page should answer:
+
+- Has the reported asset population grown or contracted?
+- How much of the relevant asset population was inspected or maintained?
+- Are expenditure changes accompanied by changes in reported asset or activity
+  quantities?
+- Do average age, inspection cycles, or maintenance cycles coincide with
+  expenditure changes?
+
+Suggested visuals are:
+
+- a line chart of asset quantity and serviced quantity over time;
+- a column chart of inspection or maintenance coverage;
+- a scatter chart of average asset age against non-routine expenditure or an
+  eligible unit-cost measure;
+- a line chart of inspection and maintenance cycles over time; and
+- tooltips containing business, category, unit, reporting period, and source
+  workbook.
+
+Age and cycle visuals should normally require a single maintenance category.
+Combining unrelated asset groups into one unweighted average would be
+misleading. These visuals describe contextual associations and must not imply
+that asset age or maintenance frequency caused an expenditure outcome.
+
+#### 4. Data quality and definitions
+
+This page should answer:
+
+- Which business-periods, categories, or metrics are missing?
+- Which categories are business-specific or available in only one fact table?
+- Which cost records lack a compatible descriptor denominator?
+- Which comparisons are direct, unsupported, or affected by a source issue?
+
+Suggested visuals are:
+
+- a business-by-reporting-period matrix with conditional formatting for
+  coverage;
+- a bar chart of records by relationship status;
+- a bar chart of issues by issue code or severity;
+- a table containing source workbook, source row, issue, model action, and AER
+  landing-page information;
+- cards for publication status, excluded source rows, and common-panel
+  periods; and
+- plain-language definitions and comparison warnings taken from
+  `docs/rin_maintenance_data_guide.md`.
+
+The known AusNet Transmission 2019-20 exception must remain visible on this
+page while it remains unresolved.
+
+### Measures and comparison safeguards
+
+The MVP should define documented Power BI measures for:
+
+- total, routine, and non-routine maintenance expenditure;
+- routine and non-routine expenditure share;
+- asset quantity at year end;
+- quantity inspected or maintained;
+- maintenance or inspection coverage;
+- expenditure per installed unit;
+- expenditure per serviced unit; and
+- year-on-year change.
+
+Measures must preserve these safeguards:
+
+- unit-cost measures return blank for unmatched, denominator-less, or
+  incompatible records;
+- counts and kilometres are never aggregated into the same denominator;
+- average-age and cycle measures are not summed;
+- blanks, recognised-special values, and unsupported comparisons are not
+  converted to zero;
+- nominal expenditure trends are not described as real-price changes;
+- the common five-year panel is the default for cross-business comparisons;
+  and
+- material source, extraction, standardisation, and model limitations are
+  disclosed to dashboard users.
+
+### Dashboard verification and acceptance
+
+Before the `.pbix` is accepted:
+
+- every relationship must have the documented one-to-many cardinality and
+  single filter direction;
+- Power BI fact and dimension row counts must reconcile to
+  `rin_maintenance_model_summary.json`;
+- the five common-panel periods must be present and sorted chronologically;
+- expenditure totals by business and reporting period must reconcile to
+  `fact_maintenance_cost.csv`;
+- descriptor values for representative categories and metrics must reconcile
+  to `fact_descriptor_metric.csv`;
+- relationship-status and issue counts must reconcile to the model outputs;
+- unit-cost measures must return blank outside a compatible category and unit
+  context;
+- no visual may silently exclude the known source exception; and
+- a non-specialist reader must be able to distinguish reported values, derived
+  measures, and data-quality warnings.
 
 The final dashboard must not silently present an incomplete business-period
 panel as complete. Missing submissions, failed extractions, and unresolved
 standardisation issues must either block final publication or be disclosed
 clearly in the dashboard and its supporting documentation.
-
-Dashboard requirements, measures, visual design, and `.pbix` verification
-remain to be specified before implementation.
 
 ## Cross-stage traceability and completeness
 
@@ -1101,8 +1443,6 @@ AER landing page
 - Normalising categories or applying unit and currency scale factors in the
   stage-1 extractor or preprocessing entry point.
 - Persistent intermediate Stage 2A outputs.
-- Final long-form tables and the stage-3 Power BI model contract.
-- Producing the consolidated Stage 3 CSV deliverables.
 - Creating Power BI relationships, measures, visuals, or the `.pbix` file.
 - Changing the existing manifest or raw workbooks.
 - Adding a logging framework.

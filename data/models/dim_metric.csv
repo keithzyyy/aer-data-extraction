@@ -1,0 +1,6 @@
+metric_id,metric_name,metric_group,metric_sort_order
+asset_quantity_at_year_end,Asset quantity at year end,quantity,1
+quantity_inspected_maintained,Quantity inspected or maintained,quantity,2
+average_age_of_asset_group,Average age of asset group,age,3
+inspection_cycle_years,Inspection cycle,cycle,4
+maintenance_cycle_years,Maintenance cycle,cycle,5

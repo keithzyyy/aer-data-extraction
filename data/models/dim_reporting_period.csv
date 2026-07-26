@@ -1,0 +1,11 @@
+reporting_period,period_start_year,period_end_year,period_sort_order,is_common_panel
+2013-14,2013,2014,1,False
+2015-16,2015,2016,2,False
+2016-17,2016,2017,3,False
+2017-18,2017,2018,4,False
+2018-19,2018,2019,5,False
+2019-20,2019,2020,6,True
+2020-21,2020,2021,7,True
+2021-22,2021,2022,8,True
+2022-23,2022,2023,9,True
+2023-24,2023,2024,10,True

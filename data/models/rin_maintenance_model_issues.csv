@@ -1,0 +1,3 @@
+stage,severity,table_name,source_workbook,source_row,issue_code,message,model_action
+2B,error,descriptor_metrics,AusNet (T) 2019-20 - Category Analysis - RIN Response - Consolidated - 28 July 2020 - PUBLIC(11429287.3).xlsx,21,unresolved_category_hierarchy,A meaningful row is missing a resolved parent or child category.,excluded_from_analytic_fact
+2B,error,descriptor_metrics,AusNet (T) 2019-20 - Category Analysis - RIN Response - Consolidated - 28 July 2020 - PUBLIC(11429287.3).xlsx,21,missing_unit,A reported descriptor quantity has no recognized source unit or exact measure-label fallback.,excluded_from_analytic_fact

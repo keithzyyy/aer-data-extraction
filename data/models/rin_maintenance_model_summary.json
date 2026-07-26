@@ -1,0 +1,52 @@
+{
+  "stage2_completeness": {
+    "extraction_complete": true,
+    "stage2a_complete": true,
+    "stage2b_complete": false,
+    "panel_complete": true,
+    "pipeline_complete": false
+  },
+  "model_build_complete": true,
+  "source_pipeline_complete": false,
+  "model_complete": false,
+  "publication_status": "usable_with_disclosed_exceptions",
+  "common_panel_periods": [
+    "2019-20",
+    "2020-21",
+    "2021-22",
+    "2022-23",
+    "2023-24"
+  ],
+  "row_counts": {
+    "business_dimension_rows": 4,
+    "reporting_period_dimension_rows": 10,
+    "maintenance_category_dimension_rows": 20,
+    "metric_dimension_rows": 5,
+    "source_workbook_dimension_rows": 27,
+    "descriptor_fact_rows": 1395,
+    "cost_fact_rows": 283,
+    "model_issue_rows": 2,
+    "excluded_source_rows": 1
+  },
+  "status_counts": {
+    "relationship_status": {
+      "matched_with_denominator": 267,
+      "no_descriptor_match": 9,
+      "matched_without_denominator": 7
+    },
+    "installed_ratio_status": {
+      "calculated": 260,
+      "no_descriptor_match": 9,
+      "missing_denominator": 7,
+      "missing_numerators": 5,
+      "nonpositive_denominator": 2
+    },
+    "serviced_ratio_status": {
+      "calculated": 260,
+      "no_descriptor_match": 9,
+      "missing_denominator": 7,
+      "missing_numerators": 5,
+      "nonpositive_denominator": 2
+    }
+  }
+}
