@@ -29,6 +29,7 @@ AER author pages
     -> immutable downloaded workbooks in data/raw/
     -> heading-driven extraction from 2.8.1 and 2.8.2
     -> canonical wide descriptor and cost CSVs
+    -> business reconciliation and parent-child enrichment
     -> category, unit, and type standardisation
     -> consolidated Power BI data model
     -> Power BI measures, visuals, and dashboard
@@ -491,60 +492,270 @@ The CLI implements the documented scan, output, partial-success, overwrite,
 report, and exit-code contracts. All 13 isolated unit tests currently pass
 without accessing the ignored raw-workbook directory.
 
-## Stage 2 - Standardise extracted maintenance data
+## Stage 2 - Enrich and standardise extracted maintenance data
 
 ### Purpose
 
-Stage 2 will convert submitted labels, units, and values into explicitly
-comparable data while retaining the canonical extraction outputs as evidence.
-It begins after stage 1; the heading extractor itself must not perform these
-semantic transformations.
+Stage 2 will first recover business identity and parent-child maintenance
+structure that is implicit in the submitted workbooks, then convert submitted
+labels, units, and values into explicitly comparable data. The canonical
+stage-1 outputs remain unchanged as source evidence; the heading extractor and
+preprocessing entry point must not perform these semantic transformations.
 
-### Planned workflow
+Stage 2 is divided into two parts:
+
+1. **Stage 2A - Enrich and structurally resolve extracted data.**
+2. **Stage 2B - Standardise labels, units, and values.**
+
+The first implementations will be notebook-oriented Python modules that return
+DataFrames for inspection. A stage-2 CLI and persistent standardised outputs
+will be considered only after both parts are stable.
+
+### Stage 2A - Enrich and structurally resolve extracted data
+
+#### Purpose and workflow
+
+Stage 2A will reconcile each extracted workbook with its acquisition metadata,
+recover omitted parent maintenance activities from bounded row context, and
+classify extracted rows without changing their submitted values.
 
 ```text
-read the canonical wide descriptor and cost CSVs
-    -> read the stage-1 run report
-    -> map category and label variations explicitly
+read descriptor, cost, run-report, and manifest DataFrames
+    -> reconcile each source workbook with one manifest record
+    -> process each workbook and table in source-row order
+    -> reconstruct omitted parent maintenance activities
+    -> classify meaningful, empty-template, and unresolved rows
+    -> return enriched tables, workbook mapping, issues, and completeness
+```
+
+The stage-1 run report supplies extraction completeness. A successful Stage 2A
+result describes enrichment of the canonical rows that were supplied; it does
+not prove that all required submissions were acquired or that every business
+has five reporting periods.
+
+#### Business reconciliation
+
+The manifest is the authoritative source of business identity and AER
+landing-page metadata. For the current workbooks, Stage 2A will use explicit,
+case-insensitive filename aliases for the four scoped businesses only to
+produce a candidate business. It will then require that the candidate business
+and extracted reporting period identify exactly one manifest record.
+
+The initial aliases will be module constants. A zero-match, multiple-match, or
+reporting-period conflict will remain visible in the mapping and issues
+outputs, leave the affected metadata unresolved, and make Stage 2A incomplete.
+Filename inference by itself must not be accepted as business identity.
+
+Future acquisition should populate `local_filename` when a workbook is
+downloaded so that later runs can join directly to the acquisition inventory.
+Stage 2A must not modify the manifest, download statuses, or local filenames.
+
+#### Parent activity resolution
+
+The descriptor and cost tables each contain a parent `maintenance_activity`
+column and a child category or subcategory column. Some workbooks visually
+continue an activity across several rows **without** merging or repeating its cell.
+Those source blanks are continuation labels rather than new activities.
+
+Stage 2A will resolve them as follows:
+
+```text
+for each workbook, sheet, and table:
+    sort rows by source_row
+    reset the current parent activity
+
+    for each row:
+        if maintenance_activity is populated:
+            retain it as the current parent and record its source row
+        else if the row has a child category and follows the current group:
+            inherit the last explicit parent and record its anchor source row
+        else:
+            leave the parent unresolved and report the row
+```
+
+Resolution must never cross a workbook, sheet, or table boundary. A gap or
+other break in the expected source-row context must be reported rather than
+filled silently. The child category label must not determine its parent by
+itself because the same child label can appear under different activities.
+Multiple consecutive continuation rows inherit the last explicit parent, not
+the preceding row's literal blank value.
+
+The source `maintenance_activity` column remains unchanged. Stage 2A appends a
+resolved value, a resolution status, and the source row containing the explicit
+parent.
+
+#### Current null-pattern evidence
+
+The current canonical outputs contain:
+
+- 11 descriptor rows with at least one missing category field and at least one
+  reported numeric metric; and
+- 16 cost rows with the same condition.
+
+In all 27 cases, only `maintenance_activity` is missing, the child category or
+subcategory is present, and the last explicit parent in source-row context is
+`Other maintenance activity`. This evidence supports the bounded continuation
+rule, but the implementation must not hardcode every missing activity as
+`Other maintenance activity`.
+
+#### Row classification
+
+Row classification and activity resolution describe different facts and must
+use separate fields.
+
+`activity_resolution_status` will use:
+
+- `submitted` when the activity is present in the source row;
+- `continued_group_label` when it is inherited from a defensible source-row
+  group; and
+- `unresolved_missing` when a meaningful row has no defensible parent.
+
+`row_classification` will use:
+
+- `meaningful` when a child category or relevant metric is present;
+- `empty_template_row` when no child category or relevant metric was
+  submitted; and
+- `unresolved` when the row is meaningful but its required parent structure
+  cannot be resolved.
+
+A child category may remain meaningful when all its numeric metrics are blank.
+Metric blanks remain factual source blanks; Stage 2A must not infer that a
+blank means zero or `not_applicable`. Empty template rows remain in the
+enriched outputs for inspection rather than being deleted.
+
+#### Planned module interface and outputs
+
+The notebook-oriented implementation will be provided by
+`src/rin_maintenance_standardizer.py`:
+
+```python
+@dataclass
+class MaintenanceStage2AResult:
+    descriptor_metrics: pd.DataFrame
+    cost_metrics: pd.DataFrame
+    workbook_mapping: pd.DataFrame
+    issues: pd.DataFrame
+    extraction_complete: bool
+    stage2a_complete: bool
+```
+
+```python
+class MaintenanceStandardizationError(RuntimeError):
+    """Raised when Stage 2 inputs cannot be processed safely."""
+```
+
+```python
+def enrich_rin_maintenance(
+    descriptor_metrics: pd.DataFrame,
+    cost_metrics: pd.DataFrame,
+    run_report: pd.DataFrame,
+    manifest: pd.DataFrame,
+) -> MaintenanceStage2AResult:
+```
+
+The enriched descriptor and cost DataFrames will retain every canonical source
+column and append:
+
+```text
+business
+landing_page_url
+source_page_url
+metadata_match_status
+maintenance_activity_resolved
+activity_resolution_status
+activity_anchor_source_row
+row_classification
+```
+
+`workbook_mapping` will contain one row per attempted source workbook,
+including its candidate and resolved business, extracted and manifest
+reporting periods, AER URLs, and match status. `issues` will contain severity,
+table name, source workbook, source row, issue code, and a factual message.
+
+`extraction_complete` will carry the overall stage-1 run-report result.
+`stage2a_complete` will be true only when every workbook represented in the
+canonical inputs has one validated manifest match and every meaningful
+extracted row has a resolved parent. It describes Stage 2A enrichment of the
+supplied data and remains separate from acquisition and reporting-period
+coverage.
+
+Missing required input columns or invalid input schemas will raise
+`MaintenanceStandardizationError`. Workbook- or row-level reconciliation
+problems will remain in the returned outputs and issues, set
+`stage2a_complete` to false, and will not suppress rows that were enriched
+successfully.
+
+#### Planned verification and acceptance
+
+Tests will use fabricated DataFrames and will confirm that:
+
+- submitted activity values and all other canonical source columns are
+  unchanged;
+- continuation rows inherit the last explicit parent and record its source
+  row;
+- multiple continuation rows retain the same explicit parent;
+- resolution never crosses workbook, sheet, or table boundaries;
+- child labels cannot determine their parent without source-row context;
+- child categories with blank metrics remain meaningful;
+- rows without a child category or meaningful metrics are empty template rows;
+- meaningful rows without a defensible parent remain unresolved;
+- business candidates require exactly one matching manifest business-period
+  record;
+- reporting-period conflicts and ambiguous matches are reported; and
+- incomplete extraction remains distinguishable from incomplete Stage 2A
+  enrichment.
+
+The current 24-workbook dataset will also be used read-only as an integration
+check. All workbooks should reconcile with one manifest record, and the known
+11 descriptor plus 16 cost continuation rows should resolve to
+`Other maintenance activity`.
+
+### Stage 2B - Standardise labels, units, and values
+
+Stage 2B will consume the enriched Stage 2A tables and perform the semantic
+transformations needed for defensible cross-business comparison:
+
+```text
+read enriched descriptor and cost DataFrames
+    -> map parent-child category and label variations explicitly
     -> apply documented unit and currency scale factors
     -> validate and enforce intended data types
     -> preserve the original submitted labels, units, and values
     -> produce validated standardised tables
 ```
 
-### Planned data contract and safeguards
+Stage 2B must:
 
-Stage 2 must:
-
-- preserve source workbook, sheet, row, reporting period, submitted label,
-  submitted unit, and submitted value;
 - store standardised values separately rather than overwriting source values;
+- map categories using resolved parent-child context rather than child labels
+  alone;
 - distinguish an unmapped category from a missing category;
 - apply scale factors explicitly, including legacy `$000's`;
 - report nonnumeric metric text rather than silently coercing it to zero; and
 - retain additional categories until an explicit mapping decision is made.
 
-Exploratory standardisation may proceed when the stage-1 run is incomplete so
-that successful workbooks remain useful. Incompleteness must be carried forward
-and must not be mistaken for a complete cross-business panel.
+Exploratory Stage 2 work may proceed when extraction or enrichment is
+incomplete so that successful workbooks remain useful. Incompleteness must be
+carried forward and must not be mistaken for a complete cross-business panel.
 
-Stage-2 implementation details, mapping tables, final data types, and tests
-remain to be specified before code is written.
+Stage 2B mapping tables, unit rules, final data types, reconciliation tests,
+persistent outputs, and command-line interface remain to be specified before
+implementation.
 
 ## Stage 3 - Create the consolidated Power BI data model
 
 ### Purpose
 
-Stage 3 will combine the validated standardised data with acquisition metadata
-into stable tables that Power BI can load directly. In plain terms, Python
-should resolve workbook irregularities and semantic differences before Power BI
-is asked to calculate or display comparisons.
+Stage 3 will use the validated standardised data and its enriched acquisition
+metadata to create stable tables that Power BI can load directly. In plain
+terms, Python should resolve workbook irregularities and semantic differences
+before Power BI is asked to calculate or display comparisons.
 
 ### Planned workflow
 
 ```text
 read validated stage-2 outputs
-    -> join business and AER landing-page metadata from the manifest
+    -> verify the business and AER metadata enriched in stage 2A
     -> verify reporting-period and business coverage
     -> reshape metrics where a long-form model is beneficial
     -> attach appropriate source lineage
@@ -556,6 +767,7 @@ read validated stage-2 outputs
 The consolidated model must:
 
 - identify business and reporting period explicitly;
+- retain the validated workbook-to-manifest relationship from stage 2A;
 - use stable metric and category identifiers;
 - distinguish descriptor quantities from maintenance expenditure;
 - expose normalised values and units while retaining source references;
@@ -603,11 +815,14 @@ Track these conditions separately:
    local workbook or a factual acquisition error.
 2. **Extraction completeness:** every supported workbook present in the
    selected raw directory produces both canonical tables.
-3. **Standardisation completeness:** every retained source label, unit, and
+3. **Enrichment completeness:** every canonical source workbook has one
+   validated manifest match and every meaningful row has a resolved parent
+   activity or a factual issue.
+4. **Standardisation completeness:** every retained source label, unit, and
    value is mapped or explicitly reported as unresolved.
-4. **Model completeness:** the intended business-period panel and metric set are
+5. **Model completeness:** the intended business-period panel and metric set are
    present without unintended duplicates.
-5. **Dashboard completeness:** published measures and visuals reconcile to the
+6. **Dashboard completeness:** published measures and visuals reconcile to the
    validated model and disclose material gaps.
 
 `run_complete` from the preprocessing CLI describes only extraction
@@ -627,7 +842,8 @@ AER landing page
     -> manifest record
     -> immutable raw workbook
     -> canonical extracted row
-    -> standardised value
+    -> stage-2A enriched row and activity resolution
+    -> stage-2B standardised value
     -> consolidated model record
     -> Power BI measure or visual
 ```
@@ -640,7 +856,10 @@ AER landing page
   protection, formulas, or merge counts.
 - Normalising categories or applying unit and currency scale factors in the
   stage-1 extractor or preprocessing entry point.
-- Final stage-2 mapping tables, type enforcement, and reconciliation tests.
+- Stage-2B category mappings, unit rules, type enforcement, and reconciliation
+  tests.
+- A stage-2 command-line interface before both Stage 2A and Stage 2B are stable.
+- Persistent intermediate Stage 2A outputs.
 - Final long-form tables and the stage-3 Power BI model contract.
 - Producing the standardised or consolidated CSV deliverables.
 - Creating Power BI relationships, measures, visuals, or the `.pbix` file.
