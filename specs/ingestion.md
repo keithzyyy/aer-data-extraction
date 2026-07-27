@@ -1249,10 +1249,10 @@ This page should answer:
 
 Suggested visuals are:
 
-- cards for total, routine, and non-routine maintenance expenditure;
-- a line chart of total expenditure by reporting period, with business as the
+- ✅cards for total, routine, and non-routine maintenance expenditure;
+- ✅a line chart of total expenditure by reporting period, with business as the
   legend;
-- a 100% stacked column chart of routine and non-routine expenditure share;
+- ✅a 100% stacked column chart of routine and non-routine expenditure share;
 - a clustered bar chart of expenditure by maintenance activity; and
 - slicers for business, reporting period, maintenance activity, maintenance
   category, and common-panel membership.
@@ -1446,10 +1446,6 @@ AER landing page
 - Creating Power BI relationships, measures, visuals, or the `.pbix` file.
 - Changing the existing manifest or raw workbooks.
 - Adding a logging framework.
-
-
-
-
 
 ## Notes
 
