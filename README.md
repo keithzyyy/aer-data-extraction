@@ -17,6 +17,8 @@ reporting periods from 2019–20 through 2023–24. Additional available history
 retained separately. The current local acquisition inventory contains 27
 workbooks.
 
+## ✏️ Please find the `.pbix` dashboard and their screenshots on the `deliverables/` directory.
+
 ## Project scope
 
 The project implements four stages:
@@ -134,11 +136,12 @@ questions.
 ├── specs/
 ├── src/
 └── tests/
+└── deliverables/
 ```
 
 | Path | Purpose |
 |---|---|
-| `aer-data-model.pbix` | Power BI semantic model and three-page dashboard. |
+| `deliverables/aer-data-model.pbix` | Power BI semantic model and three-page dashboard. |
 | `config/` | Author-page, heading-schema, and standardisation configuration. |
 | `data/rin_manifest.csv` | Acquisition inventory linking businesses, reporting periods, AER pages, and local filenames. |
 | `data/raw/` | Immutable downloaded RIN workbooks. This directory is intentionally not committed. |
